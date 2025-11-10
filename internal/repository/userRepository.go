@@ -48,17 +48,17 @@ func (r *UserRepository) GetByID(ctx context.Context, supabaseID string) (models
        		created_at as CreatedAt,
        		updated_at as UpdatedAt,
        from public.users
-       where supabase_id = $supabaseID`
+       where supabase_id = $1`
 
 	return r.getUserRepoReturn(ctx, q, supabaseID)
 }
 
 func (r *UserRepository) Create(ctx context.Context, p createUserParams) (models.User, error) {
 
-	const q = ` INSERT INTO public.users 
-     (supabase_id, Email, display_name) 
- VALUES($p.SupabaseID, $p.Email, $p.DisplayName); 
- RETURN ID, supabase_id, email, display_name, created_at, updated_at`
-
+	const q = `
+  INSERT INTO public.users (supabase_id, email, display_name)
+  VALUES ($1, $2, $3)
+  RETURNING ID, supabase_id, email, display_name, created_at, updated_at;
+`
 	return r.getUserRepoReturn(ctx, q, p.SupabaseID)
 }
