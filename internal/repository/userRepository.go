@@ -46,7 +46,7 @@ func (r *UserRepository) GetByID(ctx context.Context, supabaseID string) (models
        		Email,
        		display_name as DisplayName,
        		created_at as CreatedAt,
-       		updated_at as UpdatedAt,
+       		updated_at as UpdatedAt
        from public.users
        where supabase_id = $1`
 
